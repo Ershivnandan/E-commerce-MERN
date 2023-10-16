@@ -4,7 +4,7 @@ const Product = require('../Modals/productModal');
 
 //Create product-- Admin
 
-exports.createProduct = async(req,res )=>{
+exports.createProduct = async(req,res,next )=>{
     const product = await Product.create(req.body);
 
     res.status(201).json({success:true,data:product})
@@ -12,15 +12,34 @@ exports.createProduct = async(req,res )=>{
 
 //GET All products
 
-exports.getAllProducts = async (req,res) =>{
+exports.getAllProducts = async (req,res,next) =>{
 
     const products = await Product.find();
     res.status(200).json({success:true, data:products});
 }
 
+//GET Single Product
+
+exports.getProduceDetails = async(req, res, next)=>{
+    const product = Product.findById(req.params.id);
+
+    if(!product){
+        return res.status(500).json({
+            success: false,
+            message: "Product not found"
+        })
+    }
+
+    res.status(200).json({
+        success:true,
+        product
+    })
+
+}
+
 //Update Product --Admin
 
-exports.updateProduct = async (req, res) =>{
+exports.updateProduct = async (req, res,next) =>{
     let product = Product.findById(req.params.id);
 
     if(!product){
@@ -40,7 +59,7 @@ exports.updateProduct = async (req, res) =>{
 
 // Delete Product --Admin
 
-exports.deleteProduct = async (req,res) =>{
+exports.deleteProduct = async (req,res,next) =>{
 
     const product = await Product.findById(req.params.id);
     
