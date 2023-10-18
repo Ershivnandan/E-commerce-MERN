@@ -1,13 +1,16 @@
-const express = require('express');
+const express = require("express");
 //route import
-const productRouter = require('./routes/productroute');
-
+const productRouter = require("./routes/productroute");
+const errorMiddleware = require("./middleWare/error");
 
 const app = express();
 
 app.use(express.json());
 
-
 app.use("/api/v1", productRouter);
 
-module.exports = app
+//middleware for error
+
+app.use(errorMiddleware);
+
+module.exports = app;
